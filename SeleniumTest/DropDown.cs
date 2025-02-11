@@ -25,7 +25,7 @@ namespace SeleniumTest
         {
             //Below is element found by 'Css' 'select' is the tag name and 'form-control' is the class name. need to add (.) before class
             IWebElement dropDown = driver.FindElement(By.CssSelector("select.form-control"));
-            
+
             //This 'SelectElement' take web element 'dropDown' as an input and have to pass as an argument
             SelectElement select = new SelectElement(dropDown);
 
@@ -39,7 +39,6 @@ namespace SeleniumTest
             //Below code will select the the second option in the dropdown
             select.SelectByIndex(1);
 
-
             // Below locator has two elements and both elements will store in 'rdos' variable
             IList<IWebElement> rdos = driver.FindElements(By.CssSelector("input[type='radio']"));
 
@@ -48,21 +47,23 @@ namespace SeleniumTest
             equals to 'user' because we are looking for user 'radio button' and then it will click 
             on the element but if the value is not equal to 'user' then, it will iterate or run again and 
             look for the 'value' if it's equal to 'user' it will click in the element;
-            */
 
             foreach (IWebElement radioButton in rdos)
             {
-                if (radioButton.GetAttribute("Value").Equals("user"))
+                if (radioButton.GetAttribute("value").Equals("user"))
                 {
                     radioButton.Click();
                 }
+            */
 
-                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
-                wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.Id("usertype")));
+            driver.FindElement(By.XPath("(//span[@class='checkmark'])[2]")).Click();
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.Id("okayBtn")));
 
-                driver.FindElement(By.Id("okayBtn")).Click();
-                Boolean result = driver.FindElement(By.Id("usertype")).Selected;
-            }     
+            driver.FindElement(By.Id("okayBtn")).Click();
+            Boolean result = driver.FindElement(By.Id("usertype")).Selected;
+
+            Assert.That(result, Is.True);
         }
 
         [TearDown]
@@ -75,5 +76,5 @@ namespace SeleniumTest
                 driver = null;    // Clear the reference
             }
         }
-    } 
+    }
 }
