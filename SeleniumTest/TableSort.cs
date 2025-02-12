@@ -77,7 +77,7 @@ namespace SeleniumTest
             }
 
             // arraylist A to B = equal
-            Assert.Equals(a, b);
+            Assert.AreEqual(a, b);
         }
 
         [TearDown]
