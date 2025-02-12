@@ -42,9 +42,9 @@ namespace SeleniumTest
                     TestContext.Progress.WriteLine(product.FindElement(By.CssSelector(".card-title a")).Text);
                     driver.FindElement(By.PartialLinkText("Checkout")).Click();
                 }
-            }
-            
+            }           
         }
+
         [TearDown]
         public void CloseBrowser()
         {
