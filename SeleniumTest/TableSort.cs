@@ -61,9 +61,23 @@ namespace SeleniumTest
                 TestContext.Progress.WriteLine(element);
             }
 
-            // step 3 - Click on column
+            // step 3 - Click on column sort button
+            driver.FindElement(By.CssSelector("th[aria-label *= 'fruit name']")).Click();
+
             // step 4 - Get all the vegetables name into arraylist again after sorting - B
+            ArrayList b = new ArrayList();
+
+            IList<IWebElement> sortedveggies = driver.FindElements(By.XPath("//td[1]"));
+
+            //The 'veggie' in every iteration from the web table veggies pick one veggie
+            foreach (IWebElement veggie in sortedveggies)
+            {
+                //it will add all the veggie in each iteration in 'a' arraylist in text form
+                b.Add(veggie.Text);
+            }
+
             // arraylist A to B = equal
+            Assert.Equals(a, b);
         }
 
         [TearDown]
