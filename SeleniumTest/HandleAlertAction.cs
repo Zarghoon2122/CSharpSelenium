@@ -10,7 +10,7 @@ using System.Security.Cryptography;
 
 namespace SeleniumTest
 {
-    internal class HandleAlertAction
+    class HandleAlertAction
     {
         IWebDriver driver;
 
