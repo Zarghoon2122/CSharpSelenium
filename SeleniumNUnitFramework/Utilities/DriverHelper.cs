@@ -9,6 +9,6 @@ namespace SeleniumNUnitFramework.Utilities
 {
     public class DriverHelper
     {
-        public IWebDriver driver;  // Ensure this is declared!
+        public static IWebDriver driver {  get; set; }
     }
 }

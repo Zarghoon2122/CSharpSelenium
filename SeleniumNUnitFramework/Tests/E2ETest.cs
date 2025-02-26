@@ -3,6 +3,7 @@ using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
 using WebDriverManager.DriverConfigs.Impl;
 using SeleniumNUnitFramework.Utilities;
+using SeleniumNUnitFramework.PageObjects;
 
 namespace SeleniumNUnitFramework.Tests
 {
@@ -12,12 +13,13 @@ namespace SeleniumNUnitFramework.Tests
 
         public void E2EFlow()
         {
+            var loginPage = new LoginPage();
+
             string[] expectedProducts = { "iphone X", "Blackberry" };
             string[] actualProducts = new string[2];
-            driver.FindElement(By.Id("username")).SendKeys("rahulshettyacademy");
-            driver.FindElement(By.Name("password")).SendKeys("learning");
-            driver.FindElement(By.XPath("//div[@class='form-group'][5]/label/span/input")).Click();
-            driver.FindElement(By.XPath("//input[@value='Sign In']")).Click();
+
+            loginPage.LogIn();
+
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.PartialLinkText("Checkout")));
 
@@ -28,7 +30,6 @@ namespace SeleniumNUnitFramework.Tests
                 if (expectedProducts.Contains(product.FindElement(By.CssSelector(".card-title a")).Text))
                 {
                     product.FindElement(By.CssSelector(".card-footer button")).Click();
-
                     TestContext.Progress.WriteLine(product.FindElement(By.CssSelector(".card-title a")).Text);
                 }
             }
