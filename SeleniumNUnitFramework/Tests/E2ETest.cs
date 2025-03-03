@@ -14,14 +14,17 @@ namespace SeleniumNUnitFramework.Tests
         public void E2EFlow()
         {
             var loginPage = new LoginPage();
+            var productPage = new Products();
+            var wait = new WaitMethods();
 
             string[] expectedProducts = { "iphone X", "Blackberry" };
             string[] actualProducts = new string[2];
 
             loginPage.LogIn();
 
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.PartialLinkText("Checkout")));
+            productPage.AddProductsInCart();
+
+            wait.WaitForElementDisplay(By.PartialLinkText("Checkout"));
 
             IList<IWebElement> products = driver.FindElements(By.TagName("app-card"));
 
@@ -42,10 +45,10 @@ namespace SeleniumNUnitFramework.Tests
                 actualProducts[i] = checkoutCard[i].Text;
             }
 
-            Assert.AreEqual(expectedProducts, actualProducts);
+            Assert.That(actualProducts, Is.EqualTo(expectedProducts));
             driver.FindElement(By.CssSelector(".btn-success")).Click();
             driver.FindElement(By.Id("country")).SendKeys("ind");
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.LinkText("India")));
+            wait.WaitForElementDisplay(By.LinkText("India"));
             driver.FindElement(By.LinkText("India")).Click();
             //driver.FindElement(By.CssSelector("label[for*='chechbox2']")).Click();
             driver.FindElement(By.CssSelector("[value='Purchase']")).Click();
