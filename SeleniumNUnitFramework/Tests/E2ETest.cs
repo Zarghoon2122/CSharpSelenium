@@ -16,29 +16,35 @@ namespace SeleniumNUnitFramework.Tests
             var loginPage = new LoginPage();
             var productPage = new Products();
             var wait = new WaitMethods();
+            var checkOutPage = new CheckOutPage();
+            var confirmationPage = new ConfirmationPage();
 
             string[] expectedProducts = { "iphone X", "Blackberry" };
             string[] actualProducts = new string[2];
 
+            //Page login
             loginPage.LogIn();
 
+            //Add product to the cart
             productPage.AddProductsInCart();
 
+            //Wait for checkout button to visible
             wait.WaitForElementDisplay(By.PartialLinkText("Checkout"));
 
-            IList<IWebElement> products = driver.FindElements(By.TagName("app-card"));
+            IList<IWebElement> products = productPage.getCards();
 
             foreach (IWebElement product in products)
             {
-                if (expectedProducts.Contains(product.FindElement(By.CssSelector(".card-title a")).Text))
+                if (expectedProducts.Contains(product.FindElement(productPage.getCardTitle()).Text))
                 {
-                    product.FindElement(By.CssSelector(".card-footer button")).Click();
-                    TestContext.Progress.WriteLine(product.FindElement(By.CssSelector(".card-title a")).Text);
+                    product.FindElement(productPage.addToCartButton()).Click();
                 }
             }
 
-            driver.FindElement(By.PartialLinkText("Checkout")).Click();
-            IList<IWebElement> checkoutCard = driver.FindElements(By.CssSelector("h4 a"));
+            //Checkout product
+            productPage.checkOut();
+
+            IList<IWebElement> checkoutCard = checkOutPage.getCarts();
 
             for (int i = 0; i < checkoutCard.Count; i++)
             {
@@ -46,16 +52,23 @@ namespace SeleniumNUnitFramework.Tests
             }
 
             Assert.That(actualProducts, Is.EqualTo(expectedProducts));
-            driver.FindElement(By.CssSelector(".btn-success")).Click();
-            driver.FindElement(By.Id("country")).SendKeys("ind");
+         
+            //Click checkout button in the checkout page
+            checkOutPage.chechOut();
+
+            //Select country from list
+            confirmationPage.SelectCountry();
+
             wait.WaitForElementDisplay(By.LinkText("India"));
-            driver.FindElement(By.LinkText("India")).Click();
-            //driver.FindElement(By.CssSelector("label[for*='chechbox2']")).Click();
-            driver.FindElement(By.CssSelector("[value='Purchase']")).Click();
+
+            //Click on the country
+            confirmationPage.ClickCountry();
+
+            //Click purchase button
+            confirmationPage.PurchaseButton();
 
             //Verfiy 'Success' message appears after clicking on 'Purchase' button
-            string confirmText = driver.FindElement(By.CssSelector(".alert-success")).Text;
-            StringAssert.Contains("Success", confirmText);
+            confirmationPage.ConfirmationMessageDisplay();
         }
     }
 }
