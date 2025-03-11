@@ -4,14 +4,34 @@ using OpenQA.Selenium;
 using WebDriverManager.DriverConfigs.Impl;
 using SeleniumNUnitFramework.Utilities;
 using SeleniumNUnitFramework.PageObjects;
+using System.Collections;
 
 namespace SeleniumNUnitFramework.Tests
 {
     public class E2ETest : BaseClass
     {
-        [Test]
+        //TestCaseData class will help to add all test data for your test
+        //Yeild: use for multiple 'return' method and it will wait until all 'return's have completed
+        //IEnumerable: in below 'TestData' it returns multiple test data so we use 'IEnumerable' to collect all the data 
+        //IEnumerable: if you returining multiple test data then we use 'IEnumerable'
+        //[TestCase] if you have single parameter like "username, password" then you can use [TestCase]
+        public static IEnumerable TestData
+        {
+            get
+            {
+                yield return new TestCaseData ("rahulshettyacademy", "learning");
+                yield return new TestCaseData ("rahulshettyacademy", "learning");
+            }
+        }
 
-        public void E2EFlow()
+        //TestCaseSource: has the powerfull capability that will run multiple times with different data set
+        //TestCaseSource: it encapsulate everything in a single method
+        //You need to pass that test data below in 'TestCaseSource'
+        //TestCaseSource expects method name as an input which have all the test data
+        //TestCase: directy expect the data
+        [Test, TestCaseSource("TestData")]
+
+        public void E2EFlow(String username, String password)
         {
             var loginPage = new LoginPage();
             var productPage = new Products();
