@@ -23,7 +23,7 @@
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.2" />
 		<PackageReference Include="WebDriverManager" Version="2.17.5" />
 	</ItemGroup>
-
+	
 	<ItemGroup>
 		<Using Include="NUnit.Framework" />
 	</ItemGroup>

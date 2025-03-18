@@ -4,6 +4,7 @@ using WebDriverManager.DriverConfigs.Impl;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Edge;
 using System.Configuration;
+using System.Text.Json;
 
 namespace SeleniumNUnitFramework.Utilities
 {
@@ -42,6 +43,11 @@ namespace SeleniumNUnitFramework.Utilities
                     driver = new EdgeDriver();
                     break;
             }
+        }
+
+        public static JsonReader GetDataParser()
+        {
+            return new JsonReader();
         }
 
         [TearDown]

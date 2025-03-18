@@ -19,8 +19,8 @@ namespace SeleniumNUnitFramework.Tests
         {
             get
             {
-                yield return new TestCaseData ("rahulshettyacademy", "learning");
-                yield return new TestCaseData ("rahulshettyacademy", "learning");
+                yield return new TestCaseData(GetDataParser().extractData("username"), GetDataParser().extractData("password"), GetDataParser().extractDataArray("products"));
+                yield return new TestCaseData(GetDataParser().extractData("wrong_username"), GetDataParser().extractData("wrong_password"), GetDataParser().extractDataArray("products"));
             }
         }
 
@@ -31,7 +31,7 @@ namespace SeleniumNUnitFramework.Tests
         //TestCase: directy expect the data
         [Test, TestCaseSource("TestData")]
 
-        public void E2EFlow(String username, String password)
+        public void E2EFlow(String username, String password, String[] expectedProducts)
         {
             var loginPage = new LoginPage();
             var productPage = new Products();
@@ -39,7 +39,7 @@ namespace SeleniumNUnitFramework.Tests
             var checkOutPage = new CheckOutPage();
             var confirmationPage = new ConfirmationPage();
 
-            string[] expectedProducts = { "iphone X", "Blackberry" };
+            //string[] expectedProducts = { "iphone X", "Blackberry" };
             string[] actualProducts = new string[2];
 
             //Page login
