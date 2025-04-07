@@ -42,7 +42,7 @@ namespace SeleniumNUnitFramework.Tests
 
         //This below method will run all tests in parallel that has multiple test data sets
         //[Parallelizable(ParallelScope.All)]
-        [Test, TestCaseSource("TestData")]
+        [Test, TestCaseSource("TestData"), Category("Regression")] // You run this as regression test
 
         public void E2EFlow(String username, String password, String[] expectedProducts)
         {
@@ -104,7 +104,8 @@ namespace SeleniumNUnitFramework.Tests
             confirmationPage.ConfirmationMessageDisplay();
         }
 
-        [Test]
+        //Run test by category
+        [Test, Category("Smoke")]
         public void Locator()
         {
             driver.FindElement(By.Id("username")).SendKeys("Ahmad Shinwari");
@@ -128,6 +129,14 @@ namespace SeleniumNUnitFramework.Tests
             String errorMessage = driver.FindElement(By.ClassName("alert-danger")).Text;
             //This will print the varriable in output
             TestContext.WriteLine(errorMessage);
+
+            //Run test based on category from Terminal
+            //In Termenal, first navigate to the project where all the tests are stored by defualt the path is set to 'Solution'
+            //cd SeleniumNUnitFramework = This will navigate to the 'SeleniumNUnitFramework'
+            //dotnet test SeleniumNUnitFramework.csproj = This will run all tests in the project 
+            //dotnet test SeleniumNUnitFramework.csproj --filter TestCategory=Smoke = This will run smoke tests only
+            //dotnet test SeleniumNUnitFramework.csproj --filter TestCategory=Smoke -- TestRunParameters.Parameter(name="browserName",value="Firefox")
+
         }
     }
 }
