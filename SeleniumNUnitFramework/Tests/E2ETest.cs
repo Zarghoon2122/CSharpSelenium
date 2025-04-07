@@ -8,6 +8,11 @@ using System.Collections;
 
 namespace SeleniumNUnitFramework.Tests
 {
+    //This will run all tests are within below class
+    //[Parallelizable(ParallelScope.Children)]
+
+    //This will run all tests within the same folder. Put below method in the test inside the same folder
+    //[Parallelizable(ParallelScope.Self)]
     public class E2ETest : BaseClass
     {
         //TestCaseData class will help to add all test data for your test
@@ -15,6 +20,11 @@ namespace SeleniumNUnitFramework.Tests
         //IEnumerable: in below 'TestData' it returns multiple test data so we use 'IEnumerable' to collect all the data 
         //IEnumerable: if you returining multiple test data then we use 'IEnumerable'
         //[TestCase] if you have single parameter like "username, password" then you can use [TestCase]
+
+        //Run all data sets of tets method in parallel
+        //Run all test methods in one class parallel
+        //Run all test files in project parallel
+
         public static IEnumerable TestData
         {
             get
@@ -29,6 +39,9 @@ namespace SeleniumNUnitFramework.Tests
         //You need to pass that test data below in 'TestCaseSource'
         //TestCaseSource expects method name as an input which have all the test data
         //TestCase: directy expect the data
+
+        //This below method will run all tests in parallel that has multiple test data sets
+        //[Parallelizable(ParallelScope.All)]
         [Test, TestCaseSource("TestData")]
 
         public void E2EFlow(String username, String password, String[] expectedProducts)
@@ -72,7 +85,7 @@ namespace SeleniumNUnitFramework.Tests
             }
 
             Assert.That(actualProducts, Is.EqualTo(expectedProducts));
-         
+
             //Click checkout button in the checkout page
             checkOutPage.chechOut();
 
@@ -89,6 +102,32 @@ namespace SeleniumNUnitFramework.Tests
 
             //Verfiy 'Success' message appears after clicking on 'Purchase' button
             confirmationPage.ConfirmationMessageDisplay();
+        }
+
+        [Test]
+        public void Locator()
+        {
+            driver.FindElement(By.Id("username")).SendKeys("Ahmad Shinwari");
+            driver.FindElement(By.Id("username")).Clear();
+            driver.FindElement(By.Id("username")).SendKeys("Ahmad");
+            driver.FindElement(By.Name("password")).SendKeys("12345");
+
+            // css selector
+            // tagname[attribute='value']
+            // driver.FindElement(By.CssSelector("input[value='Sign In']")).Click();
+
+            //Find element by xpath through the parent tag by using forward '/'
+            driver.FindElement(By.XPath("//div[@class='form-group'][5]/label/span/input")).Click();
+
+            // Xpath
+            driver.FindElement(By.XPath("//input[@value='Sign In']")).Click();
+
+            //Explicit wait method
+            Thread.Sleep(3000);
+            //Code will capture the String "alert-danger" using the 'Text' method into the varriable "errorMessage"
+            String errorMessage = driver.FindElement(By.ClassName("alert-danger")).Text;
+            //This will print the varriable in output
+            TestContext.WriteLine(errorMessage);
         }
     }
 }

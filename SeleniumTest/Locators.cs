@@ -42,9 +42,11 @@ namespace SeleniumTest
             // Xpath
             driver.FindElement(By.XPath("//input[@value='Sign In']")).Click();
 
+            /*
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.TextToBePresentInElementValue(driver.
             FindElement(By.Id("SignInBtn")), "Sign In"));
+            */
 
             //Explicit wait method
             Thread.Sleep(3000);
